@@ -1,4 +1,4 @@
-package com.example.cleanarchitecturenoteapp.feature_note.presentation.notes.components
+package com.example.cleanarchitecturenoteapp.feature_note.presentation.notes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,6 +6,8 @@ import com.example.cleanarchitecturenoteapp.feature_note.domain.model.Note
 import com.example.cleanarchitecturenoteapp.feature_note.domain.use_case.NoteUseCases
 import com.example.cleanarchitecturenoteapp.feature_note.domain.util.NoteOrder
 import com.example.cleanarchitecturenoteapp.feature_note.domain.util.OrderType
+import com.example.cleanarchitecturenoteapp.feature_note.presentation.notes.NotesEvent
+import com.example.cleanarchitecturenoteapp.feature_note.presentation.notes.NotesState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
