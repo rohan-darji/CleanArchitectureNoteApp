@@ -26,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -38,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cleanarchitecturenoteapp.feature_note.domain.model.Note
 import com.example.cleanarchitecturenoteapp.feature_note.presentation.add_edit_note.components.TransparentHintTextField
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -58,15 +60,30 @@ fun AddEditNoteScreen(
         )
     }
     val scope = rememberCoroutineScope()
+    
+    LaunchedEffect(key1 = true) {
+        viewModel.eventFlow.collectLatest { event ->
+            when(event) {
+                is AddEditNoteViewModel.UiEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(
+                        message = event.message
+                    )
+                }
+                is AddEditNoteViewModel.UiEvent.SaveNote -> {
+                    navController.navigateUp()
+                }
+            }
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 viewModel.onEvent(AddEditNoteEvent.SaveNote)
             },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = Color.White
             ) {
-                Icon(imageVector = Icons.Default.Save, contentDescription = "Save note")
+                Icon(imageVector = Icons.Default.Save, contentDescription = "Save note", tint = Color.Black)
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -137,7 +154,7 @@ fun AddEditNoteScreen(
                     viewModel.onEvent(AddEditNoteEvent.ChangeContentFocus(it))
                 },
                 isHintVisible = contentState.isHintVisible,
-                singleLine = true,
+                singleLine = false,
                 textStyle = MaterialTheme.typography.headlineSmall
             )
         }
